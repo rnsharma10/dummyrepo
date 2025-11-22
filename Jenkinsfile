@@ -1,11 +1,16 @@
 pipeline {
     agent any
+    options {
+        skipDefaultCheckout(true)
+    }
     stages {
         stage('fetching') {
             steps {
-                    sh """
-                        echo "fetching"
-                    """
+                cleanWs()
+                checkout scm
+                sh """
+                    echo "fetching ${env.BRANCH_NAME}"
+                """
             }
         }
         stage('build') {
