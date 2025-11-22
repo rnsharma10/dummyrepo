@@ -1,7 +1,6 @@
 pipeline {
     agent any
     options {
-        quiet()
         skipDefaultCheckout(true)
     }
     stages {
