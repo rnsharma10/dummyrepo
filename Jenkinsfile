@@ -17,8 +17,7 @@ pipeline {
         stage('type of change'){
             steps{
                 script{
-                    boolean change_id = (${env.CHANGE_ID})
-                    if (change_id){
+                    if (env.CHANGE_ID){
                         echo "running pipeline for PR-${env.CHANGE_ID} from ${env.CHANGE_BRANCH} to ${env.CHANGE_TARGET}."
                     } 
                     else {
