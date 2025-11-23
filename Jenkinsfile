@@ -19,11 +19,11 @@ pipeline {
                 script{
                     if (env.CHANGE_ID){
                         env.BUILD_TYPE = "Pull request"
-                        env.BUILD_REF = "🟢 PR-${env.CHANGE_ID}: from ${env.CHANGE_BRANCH} to ${env.CHANGE_TARGET}."
+                        env.BUILD_REF = "🟠 PR-${env.CHANGE_ID}: from ${env.CHANGE_BRANCH} to ${env.CHANGE_TARGET}."
                     } 
                     else {
                         env.BUILD_TYPE = "Branch build"
-                        env.BUILD_REF = "🟢 BRANCH: ${env.BRANCH_NAME}"
+                        env.BUILD_REF = "🟠 BRANCH: ${env.BRANCH_NAME}"
                         echo 
                     }
                     echo """
@@ -63,7 +63,19 @@ pipeline {
         }
     }
     post{
-        always{
+        success {
+            echo "
+            ======================================
+            ${env.BUILD_STATUS}
+            ======================================".stripIndent()
+        }
+        failure {
+            echo "
+            ======================================
+            ${env.BUILD_STATUS}
+            ======================================".stripIndent()
+        }
+        always {
             cleanWs(cleanWhenNotBuilt: false,
                     deleteDirs: true,
                     disableDeferredWipeout: true,
