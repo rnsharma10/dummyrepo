@@ -4,13 +4,27 @@ pipeline {
         skipDefaultCheckout(true)
     }
     stages {
+        stage('prepping the workspace'){
+            steps{
+                cleanWs()
+            }
+        }
         stage('fetching') {
             steps {
-                cleanWs()
                 checkout scm
+            }
+        }
+        stage('type of change'){
+            steps{
+                sh """
+                -----------------------------------------------
+                ${env}
+                -----------------------------------------------
+                """
                 sh """
                     echo "fetching ${env.BRANCH_NAME}"
                 """
+
             }
         }
         stage('build') {
