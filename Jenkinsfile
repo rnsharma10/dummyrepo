@@ -16,11 +16,7 @@ pipeline {
         }
         stage('type of change'){
             steps{
-                sh """
-                -----------------------------------------------
-                env
-                -----------------------------------------------
-                """
+                sh 'env'
                 sh """
                     echo "fetching ${env.BRANCH_NAME}"
                 """
