@@ -24,7 +24,6 @@ pipeline {
                     else {
                         env.BUILD_TYPE = "Branch build"
                         env.BUILD_REF = "🟠 BRANCH: ${env.BRANCH_NAME}"
-                        echo 
                     }
                     echo """
                     ====================================================
