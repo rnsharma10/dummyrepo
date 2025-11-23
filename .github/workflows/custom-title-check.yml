@@ -7,7 +7,6 @@ on:
 jobs:
   check_pr_title:
     runs-on: ubuntu-latest # Change this to 'self-hosted' if needed
-
     steps:
       - name: Extract Branch ID and Title
         id: vars
