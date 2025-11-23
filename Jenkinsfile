@@ -64,16 +64,16 @@ pipeline {
     }
     post{
         success {
-            echo "
+            echo """
             ======================================
             ${env.BUILD_STATUS}
-            ======================================".stripIndent()
+            ======================================""".stripIndent()
         }
         failure {
-            echo "
+            echo """
             ======================================
             ${env.BUILD_STATUS}
-            ======================================".stripIndent()
+            ======================================""".stripIndent()
         }
         always {
             cleanWs(cleanWhenNotBuilt: false,
