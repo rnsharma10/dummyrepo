@@ -66,13 +66,13 @@ pipeline {
         success {
             echo """
             ======================================
-            ${currentBuild.result}
+            🟢 ${currentBuild.result}
             ======================================""".stripIndent()
         }
         failure {
             echo """
             ======================================
-            ${currentBuild.result}
+            🔴 ${currentBuild.result}
             ======================================""".stripIndent()
         }
         always {
