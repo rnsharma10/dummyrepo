@@ -7,7 +7,8 @@ on:
 jobs:
   check_pr_title:
     runs-on: ubuntu-latest # Change this to 'self-hosted' if needed
-
+    container:
+      image: alpine/git:latest
     steps:
       - name: Extract Branch ID and Title
         id: vars
