@@ -17,17 +17,20 @@ pipeline {
         stage('type of change'){
             steps{
                 script{
-                    echo "===================================================="
                     if (env.CHANGE_ID){
                         env.BUILD_TYPE = "Pull request"
-                        env.BUILD_REF = "🟢 PR-${env.CHANGE_ID}: from ${env.CHANGE_BRANCH} to ${env.CHANGE_TARGET}."
+                        env.BUILD_REF = "🟠 PR-${env.CHANGE_ID}: from ${env.CHANGE_BRANCH} to ${env.CHANGE_TARGET}."
                     } 
                     else {
                         env.BUILD_TYPE = "Branch build"
-                        env.BUILD_REF = "🟢 BRANCH: ${env.BRANCH_NAME}"
+                        env.BUILD_REF = "🟠 BRANCH: ${env.BRANCH_NAME}"
                         echo 
                     }
-                    echo "===================================================="
+                    echo """
+                    ====================================================
+                    BUILD_TYPE: ${env.BUILD_TYPE}
+                    BUILD_REF: ${env.BUILD_REF}
+                    ====================================================""".stripIndent()
                 }
 
 
@@ -53,6 +56,7 @@ pipeline {
         }
         stage('deploy') {
             steps {
+                    error("declarative failure")
                     sh """
                         echo "deploying"
                     """
@@ -60,7 +64,19 @@ pipeline {
         }
     }
     post{
-        always{
+        success {
+            echo """
+            ======================================
+            🟢 ${currentBuild.result}
+            ======================================""".stripIndent()
+        }
+        failure {
+            echo """
+            ======================================
+            🔴 ${currentBuild.result}
+            ======================================""".stripIndent()
+        }
+        always {
             cleanWs(cleanWhenNotBuilt: false,
                     deleteDirs: true,
                     disableDeferredWipeout: true,
