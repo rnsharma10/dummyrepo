@@ -66,13 +66,13 @@ pipeline {
         success {
             echo """
             ======================================
-            ${env.BUILD_STATUS}
+            ${currentBuild.result}
             ======================================""".stripIndent()
         }
         failure {
             echo """
             ======================================
-            ${env.BUILD_STATUS}
+            ${currentBuild.result}
             ======================================""".stripIndent()
         }
         always {
