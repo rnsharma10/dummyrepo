@@ -26,10 +26,10 @@ pipeline {
                         env.BUILD_REF = "🟢 BRANCH: ${env.BRANCH_NAME}"
                         echo 
                     }
-                    echo "===================================================="
-                    echo "${env.BUILD_TYPE}"
-                    echo "${env.BUILD_REF}"
-                    echo "===================================================="
+                    echo """====================================================
+                    BUILD_TYPE: ${env.BUILD_TYPE}
+                    BUILD_REF: ${env.BUILD_REF}
+                    echo "===================================================="""
                 }
 
 
