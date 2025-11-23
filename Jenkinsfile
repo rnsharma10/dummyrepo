@@ -73,7 +73,7 @@ pipeline {
             echo """
             ======================================
             🔴 ${currentBuild.result}
-            ======================================""".stripIndent()
+            ======================================"".stripIndent()
         }
         always {
             cleanWs(cleanWhenNotBuilt: false,
