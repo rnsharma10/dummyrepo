@@ -17,7 +17,6 @@ pipeline {
         stage('type of change'){
             steps{
                 script{
-                    echo "===================================================="
                     if (env.CHANGE_ID){
                         env.BUILD_TYPE = "Pull request"
                         env.BUILD_REF = "🟢 PR-${env.CHANGE_ID}: from ${env.CHANGE_BRANCH} to ${env.CHANGE_TARGET}."
@@ -27,6 +26,9 @@ pipeline {
                         env.BUILD_REF = "🟢 BRANCH: ${env.BRANCH_NAME}"
                         echo 
                     }
+                    echo "===================================================="
+                    echo "${env.BUILD_TYPE}"
+                    echo "${env.BUILD_REF}"
                     echo "===================================================="
                 }
 
