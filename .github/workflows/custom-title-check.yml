@@ -1,0 +1,51 @@
+name: 'PR Title Enforcer'
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+
+jobs:
+  check_pr_title:
+    runs-on: ubuntu-latest # Change this to 'self-hosted' if needed
+
+    steps:
+      - name: Extract Branch ID and Title
+        id: vars
+        run: |
+          # 1. Get the source branch name (e.g., 'feature/DA-123-login-fix')
+          SOURCE_BRANCH="${{ github.head_ref }}"
+          
+          # 2. Extract the Ticket ID/Prefix (e.g., 'DA-123')
+          # This command strips characters up to the first slash, and then everything after the first hyphen (if any).
+          # It capitalizes the result.
+          TICKET_ID=$(echo "$SOURCE_BRANCH" | sed -E 's/^[^/]*\///' | cut -d'-' -f1,2 | tr a-z A-Z)
+          
+          # 3. Define the required regex pattern for the title
+          # Requires: Start of line (^), followed by TICKET_ID, a colon, and a space (: ), followed by anything (.*)
+          REQUIRED_REGEX="^${TICKET_ID} .+"
+          
+          # Set variables as outputs for the next step and for logging
+          echo "TICKET_ID=$TICKET_ID" >> $GITHUB_OUTPUT
+          echo "REQUIRED_REGEX=$REQUIRED_REGEX" >> $GITHUB_OUTPUT
+          echo "PR_TITLE=${{ github.event.pull_request.title }}" >> $GITHUB_OUTPUT
+
+      - name: Validate PR Title Pattern
+        run: |
+          # Retrieve variables set in the previous step's output
+          PR_TITLE="${{ steps.vars.outputs.PR_TITLE }}"
+          REQUIRED_REGEX="${{ steps.vars.outputs.REQUIRED_REGEX }}"
+          TICKET_ID="${{ steps.vars.outputs.TICKET_ID }}"
+
+          echo "Title Found: $PR_TITLE"
+          echo "Checking against Pattern: $REQUIRED_REGEX"
+          
+          # Bash regex matching operator
+          if [[ "$PR_TITLE" =~ $REQUIRED_REGEX ]]; then
+            echo "✅ SUCCESS: PR Title is compliant."
+          else
+            echo "❌ FAILURE: PR Title does not match convention!"
+            echo "The title MUST start with the extracted ticket ID and a space."
+            echo "Example required format: '$TICKET_ID Brief description of the change'"
+            # Exit with code 1 to fail the GitHub status check
+            exit 1 
+          fi
