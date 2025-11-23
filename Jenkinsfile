@@ -55,7 +55,7 @@ pipeline {
         }
         stage('deploy') {
             steps {
-                    error("declarative failure")
+                    // error("declarative failure")
                     sh """
                         echo "deploying"
                     """
